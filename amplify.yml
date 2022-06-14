@@ -1,0 +1,18 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - yarn
+        - aws s3 cp s3://$CONTENTS_BUCKET app --recursive
+        - yarn generate:schema
+    build:
+      commands:
+        - yarn build
+  artifacts:
+    baseDirectory: .output/public
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
