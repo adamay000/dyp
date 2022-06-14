@@ -1,0 +1,34 @@
+body {
+  background: $color-background-primary;
+  line-height: 1;
+  letter-spacing: 1px;
+  font-size: 14px;
+  font-family: $font-base;
+  font-feature-settings: 'palt';
+  color: $color-text-secondary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  @media ($pc) {
+    letter-spacing: 2px;
+    font-size: 16px;
+  }
+}
+a,
+button {
+  color: $color-link-primary;
+  transition: opacity 120ms ease-in-out;
+}
+a:hover,
+button:hover:not(:disabled) {
+  opacity: 0.6;
+  @media ($sp) {
+    opacity: 1;
+  }
+}
+a {
+  text-decoration: underline;
+}
+button:disabled {
+  cursor: not-allowed;
+}

@@ -1,0 +1,13 @@
+$sp-breakpoint: 768px;
+$tablet-breakpoint: 1024px;
+
+$sp: unquote('max-width: #{$sp-breakpoint - 1px}');
+$tablet: unquote('min-width: #{$sp-breakpoint}) and (max-width: #{$tablet-breakpoint - 1px}');
+$pc: unquote('min-width: #{$sp-breakpoint}');
+
+@mixin until($threshold) {
+  /* stylelint-disable-next-line media-feature-name-no-unknown */
+  @media (unquote('max-width: #{$threshold - 1px}')) {
+    @content;
+  }
+}

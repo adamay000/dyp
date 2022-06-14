@@ -1,0 +1,27 @@
+$font-base: 'Helvetica Neue', Arial, 'ヒラギノ角ゴ Pro', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', YuGothic,
+  Osaka, 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS P Gothic', sans-serif;
+$font-japanese: 'ヒラギノ角ゴ Pro', 'Hiragino Kaku Gothic Pro', '游ゴシック', 'Yu Gothic', YuGothic, Osaka, 'メイリオ',
+  Meiryo, 'ＭＳ Ｐゴシック', 'MS P Gothic', sans-serif;
+$color-background-primary: #f8f8f8;
+$color-background-secondary: #efefef;
+$color-background-tertiary: #a9a9a9;
+$color-border-primary: #bfbfbf;
+$color-text-primary: #000000;
+$color-text-secondary: #404040;
+$color-text-tertiary: #808080;
+$color-text-inverse: #f8f8f8;
+$color-link-primary: #336699;
+$color-tag-background: #f5eaf4;
+$color-tag-text: #d79279;
+$color-modal-background: rgba(#000000, 0.6);
+$color-skeleton-background: linear-gradient(125deg, #bfbfbf 0%, #efefef 100%);
+$color-skeleton-luster: linear-gradient(90deg, rgba(#ffffff, 0) 0, rgba(#ffffff, 0.5) 50%, rgba(#ffffff, 0) 100%);
+
+$detail-width-pc: 1200px;
+$detail-margin-pc: 80px;
+$detail-margin-tablet: 60px;
+$detail-margin-sp: 16px;
+
+$z-modal-background: 9000;
+$z-detail: 9100;
+$z-detail-navigator: 9200;

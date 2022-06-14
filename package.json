@@ -1,0 +1,79 @@
+{
+  "name": "dyp",
+  "version": "1.0.0",
+  "description": "Go fish.",
+  "engines": {
+    "node": ">=16 < 18"
+  },
+  "author": "adamay000",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "BUILD_ENV=dev node --inspect node_modules/nuxi/bin/nuxi.mjs dev",
+    "build": "nuxi generate",
+    "generate:schema": "typescript-json-schema app/contents/definition.ts Contents --required --strictNullChecks --out app/contents/schema.json",
+    "postgenerate:schema": "prettier --write --list-different app/contents/schema.json",
+    "typecheck": "nuxi typecheck",
+    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
+    "lint:css": "yarn lint:css:vue && yarn lint:css:scss",
+    "lint:css:vue": "stylelint \"**/*.vue\" --custom-syntax postcss-html --ignore-path .gitignore",
+    "lint:css:scss": "stylelint \"**/*.scss\" --custom-syntax postcss-scss --ignore-path .gitignore",
+    "lint:prettier": "prettier --check .",
+    "lint": "yarn lint:js && yarn lint:css && yarn lint:prettier",
+    "lintfix": "prettier --write --list-different . && yarn lint:js --fix && yarn lint:css:vue --fix && yarn lint:css:scss --fix",
+    "prepare": "simple-git-hooks",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged && npx nuxi typecheck",
+    "commit-msg": "npx commitlint --edit $1"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --cache",
+    "*.vue": "stylelint --custom-syntax postcss-html",
+    "*.scss": "stylelint --custom-syntax postcss-scss",
+    "*.**": "prettier --check --ignore-unknown"
+  },
+  "dependencies": {
+    "ajv": "^8.9.0",
+    "animejs": "^3.2.1",
+    "dayjs": "^1.10.7",
+    "destyle.css": "^3.0.2",
+    "intersection-observer": "^0.12.0",
+    "is": "^3.3.0",
+    "p-defer": "^4.0.0",
+    "throttle-debounce": "^3.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^16.0.0",
+    "@nuxtjs/eslint-config-typescript": "^8.0.0",
+    "@types/animejs": "^3.1.4",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^27.4.0",
+    "@types/throttle-debounce": "^2.1.0",
+    "@vue/test-utils": "^2.0.0-rc.18",
+    "@vue/vue3-jest": "^27.0.0-alpha.4",
+    "commitlint": "^16.0.2",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-nuxt": "^3.1.0",
+    "fs-extra": "^10.0.0",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.1.7",
+    "nuxt": "npm:nuxt3@latest",
+    "postcss-html": "^1.3.0",
+    "postcss-scss": "^4.0.3",
+    "prettier": "^2.5.1",
+    "sass": "^1.49.4",
+    "simple-git-hooks": "^2.7.0",
+    "stylelint": "^14.3.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended-vue": "^1.1.0",
+    "stylelint-config-standard": "^24.0.0",
+    "stylelint-order": "^5.0.0",
+    "stylelint-rscss": "^0.4.0",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4",
+    "typescript-json-schema": "^0.53.0"
+  }
+}
