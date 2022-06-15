@@ -42,6 +42,7 @@
     "destyle.css": "^3.0.2",
     "intersection-observer": "^0.12.0",
     "is": "^3.3.0",
+    "keycode": "^2.2.1",
     "p-defer": "^4.0.0",
     "throttle-debounce": "^3.0.1"
   },
