@@ -13,7 +13,9 @@ useHead({
 <template>
   <div class="page-wrapper">
     <div class="content">
-      <ProjectBlock />
+      <IntroductionBlock class="introduction" />
+      <p class="projecttitle">PROJECTS</p>
+      <ProjectBlock class="projects" />
     </div>
   </div>
 </template>
@@ -29,6 +31,26 @@ useHead({
     }
     @media ($sp) {
       padding: 16px;
+    }
+  }
+  & > .content > .introduction {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  & > .content > .projecttitle {
+    margin-top: 80px;
+    letter-spacing: 12px;
+    font-size: 60px;
+    font-weight: 700;
+    color: $color-text-quaternary;
+    @media ($sp) {
+      display: none;
+    }
+  }
+  & > .content > .projects {
+    margin-top: 16px;
+    @media ($sp) {
+      margin-top: 60px;
     }
   }
 }
