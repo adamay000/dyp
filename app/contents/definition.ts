@@ -22,6 +22,8 @@ export interface Contents {
         url: string
         comment: string | null
       }>
+      site: string | null
+      video: string | null
       github: string | null
       thumbnail: string
       images: Array<string>

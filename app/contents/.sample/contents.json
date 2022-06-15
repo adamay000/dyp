@@ -33,6 +33,8 @@
         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim id nisl sed imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed rutrum feugiat nibh vel ultrices. Ut porta eget enim et malesuada. Maecenas blandit enim at ultricies bibendum. Donec non convallis nulla. Nullam fringilla ante at nunc vestibulum eleifend. Curabitur facilisis nibh mi, vitae aliquam eros euismod sit amet. Morbi euismod, ipsum id vehicula fringilla, diam sem feugiat arcu, at mollis mi leo eget purus. Morbi lobortis, lectus et facilisis finibus, lacus nisi porttitor turpis, ut consectetur est ipsum non diam. Cras a aliquam mi, a consequat magna. Donec in lacus eu lorem pharetra pharetra in at dolor. Etiam ut viverra tellus.",
         "position": null,
         "links": [],
+        "site": null,
+        "video": null,
         "github": null,
         "images": ["p1.png", "p2.png", "p3.png"],
         "tags": ["Tag01", "Tag02"]
