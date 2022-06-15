@@ -199,18 +199,42 @@ const leave = async (_: unknown, done: () => void) => {
         </div>
       </div>
       <div class="summary project-summary">
-        <h1 ref="fromTitleRef" class="title hero-title">{{ project.title }}</h1>
-        <p ref="fromDateRef" class="date hero-date">{{ date }}</p>
-        <a
-          v-if="project.github !== null"
-          :href="project.github"
-          rel="nofollow noopener noreferrer"
-          target="_blank"
-          class="github"
-          @click.stop
-        >
-          <img ref="fromGithubRef" src="@/assets/images/github.png" alt="github" class="icon" />
-        </a>
+        <div class="description">
+          <h1 ref="fromTitleRef" class="title hero-title">{{ project.title }}</h1>
+          <p ref="fromDateRef" class="date hero-date">{{ date }}</p>
+        </div>
+        <div class="icons">
+          <a
+            v-if="project.site !== null"
+            :href="project.site"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            class="icon"
+            @click.stop
+          >
+            <img src="@/assets/images/site.png" alt="site" class="image" />
+          </a>
+          <a
+            v-if="project.video !== null"
+            :href="project.video"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            class="icon"
+            @click.stop
+          >
+            <img src="@/assets/images/video.png" alt="video" class="image" />
+          </a>
+          <a
+            v-if="project.github !== null"
+            :href="project.github"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            class="icon"
+            @click.stop
+          >
+            <img ref="fromGithubRef" src="@/assets/images/github.png" alt="github" class="image" />
+          </a>
+        </div>
       </div>
     </div>
     <Transition name="project-detail" @enter="enter" @leave="leave">
@@ -349,6 +373,9 @@ const leave = async (_: unknown, done: () => void) => {
 }
 
 .project-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   height: 60px;
   padding: 16px 2px;
   @media ($tablet) {
@@ -357,9 +384,8 @@ const leave = async (_: unknown, done: () => void) => {
   @media ($sp) {
     padding: 8px 2px;
   }
-  & > .title {
+  & > .description > .title {
     margin-bottom: 8px;
-    padding-right: 32px;
     font-size: 16px;
     @media ($tablet) {
       font-size: 14px;
@@ -368,28 +394,37 @@ const leave = async (_: unknown, done: () => void) => {
       font-size: 14px;
     }
   }
-  & > .github {
+  & > .icons {
+    display: flex;
+    height: 44px;
+    margin-top: -12px;
+    margin-right: -8px;
+    text-align: right;
+    @media ($tablet) {
+      height: 40px;
+      margin-top: -8px;
+    }
+    @media ($sp) {
+      height: 40px;
+      margin-top: -4px;
+    }
+  }
+  & > .icons > .icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 4px;
-    right: -4px;
     width: 44px;
     height: 44px;
-    text-align: right;
     @media ($tablet) {
-      top: 0;
       width: 40px;
       height: 40px;
     }
     @media ($sp) {
-      top: 0;
       width: 40px;
       height: 40px;
     }
   }
-  & > .github > .icon {
+  & > .icons > .icon > .image {
     width: 24px;
     height: 24px;
   }
