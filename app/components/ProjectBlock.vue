@@ -32,10 +32,44 @@ const nextId = $computed<string | null>(() => {
 /** 指定したプロジェクトを詳細表示する */
 const handleOpen = (id: string) => {
   activeProjectId = id
+
+  // 表示時に閉じる、前後に進むボタン(これらはtabindex="9999")にフォーカスを合わせる
+  // nextTickだとタイミング合わないのでとりあえずsetTimeout
+  // 失敗してもクリティカルではない
+  setTimeout(() => {
+    // すでに前後に進むボタンにフォーカスしている場合はそのまま何もしない
+    //
+    if (document.activeElement instanceof HTMLElement) {
+      if (document.activeElement.tabIndex === 9999) {
+        return
+      }
+    }
+
+    const firstButton = document.querySelector('[tabindex="9999"]')
+    if (firstButton instanceof HTMLElement) {
+      firstButton.focus()
+    }
+  })
 }
 /** 詳細表示しているプロジェクトを閉じる */
 const handleClose = () => {
+  const prevActiveProjectId = activeProjectId
   activeProjectId = null
+
+  // 閉じたときにそのプロジェクトの位置にフォーカスを移動させる
+  // nextTickだとタイミング合わないのでとりあえずsetTimeout
+  // 失敗してもクリティカルではない
+  setTimeout(() => {
+    const closedProject = document.querySelector(`#${prevActiveProjectId}`)
+    if (closedProject instanceof HTMLElement) {
+      // 本来タブで操作できないところに動かしたいので一時的にtabindexを変更する
+      closedProject.tabIndex = 0
+      closedProject.focus()
+      closedProject.tabIndex = -1
+      // focus残ったままだとスタイルも変わってしまうのでblurさせる
+      closedProject.blur()
+    }
+  })
 }
 
 // 左右キーを押したときに前後のプロジェクトに表示を切り替える
@@ -67,7 +101,7 @@ watch(
 <template>
   <section class="c-project-block">
     <ul class="list">
-      <li v-for="project in projects" :key="project.id" class="item">
+      <li v-for="project in projects" :id="project.id" :key="project.id" class="item">
         <ProjectArticle
           :project="project"
           :active="activeProjectId === project.id"
@@ -78,17 +112,24 @@ watch(
       </li>
     </ul>
     <Transition name="project-background">
-      <div v-if="isActive" class="project-background" @click="handleClose" />
+      <div
+        v-if="isActive"
+        class="project-background"
+        role="button"
+        tabindex="9999"
+        @keydown.self.enter="handleClose"
+        @click="handleClose"
+      />
     </Transition>
     <Transition name="project-navigator">
       <div v-if="isActive" class="project-navigator">
         <div class="inner">
-          <button class="close" @click="handleClose">閉じる</button>
-          <button :disabled="prevId === null" class="button -prev" @click="handleOpen(prevId!)">
+          <button class="close" tabindex="9999" @click="handleClose">閉じる</button>
+          <button :disabled="prevId === null" class="button -prev" tabindex="9999" @click="handleOpen(prevId!)">
             <span class="hitarea" />
             <span class="text">PREV</span>
           </button>
-          <button :disabled="nextId === null" class="button -next" @click="handleOpen(nextId!)">
+          <button :disabled="nextId === null" class="button -next" tabindex="9999" @click="handleOpen(nextId!)">
             <span class="hitarea" />
             <span class="text">NEXT</span>
           </button>
@@ -140,6 +181,25 @@ watch(
   bottom: 0;
   left: 0;
   background: $color-modal-background;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 34px;
+    right: 16px;
+    width: 40px;
+    height: 4px;
+    background: #808080;
+    @media ($sp) {
+      display: none;
+    }
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
   &-enter-active,
   &-leave-active {
     transition: opacity 240ms ease-in-out;

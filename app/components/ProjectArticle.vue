@@ -192,7 +192,13 @@ const leave = async (_: unknown, done: () => void) => {
 
 <template>
   <article class="c-project-article" :class="{ '-active': active }">
-    <div class="list" @click="emit('open', project.id)">
+    <div
+      class="list"
+      role="button"
+      :tabindex="active || hasAnotherActive ? -1 : 0"
+      @keydown.self.enter="!active && emit('open', project.id)"
+      @click="emit('open', project.id)"
+    >
       <div class="thumbnail">
         <div ref="fromThumbnailRef" class="image">
           <ImgWithLoading :src="project.thumbnail" :alt="project.title" :style="{ width: '100%', height: '100%' }" />
@@ -210,6 +216,7 @@ const leave = async (_: unknown, done: () => void) => {
             rel="nofollow noopener noreferrer"
             target="_blank"
             class="icon"
+            :tabindex="active || hasAnotherActive ? -1 : 0"
             @click.stop
           >
             <img src="@/assets/images/site.png" alt="site" class="image" />
@@ -220,6 +227,7 @@ const leave = async (_: unknown, done: () => void) => {
             rel="nofollow noopener noreferrer"
             target="_blank"
             class="icon"
+            :tabindex="active || hasAnotherActive ? -1 : 0"
             @click.stop
           >
             <img src="@/assets/images/video.png" alt="video" class="image" />
@@ -230,6 +238,7 @@ const leave = async (_: unknown, done: () => void) => {
             rel="nofollow noopener noreferrer"
             target="_blank"
             class="icon"
+            :tabindex="active || hasAnotherActive ? -1 : 0"
             @click.stop
           >
             <img ref="fromGithubRef" src="@/assets/images/github.png" alt="github" class="image" />
