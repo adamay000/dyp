@@ -130,6 +130,9 @@ export const useHero = (
     targets: {},
     easing: 'linear',
     duration,
+    complete: () => {
+      animationWatchers.resolve()
+    },
     changeComplete: () => {
       animationWatchers.resolve()
     },
@@ -174,6 +177,16 @@ export const useHero = (
         isToVisible,
         direction: animation.direction === 'normal' ? 'normal' : 'reverse'
       })
+
+      // 'complete'のコールバックはreverseアニメーションの終了時(leaveが終わった時)には呼ばれないことがある
+      // (おそらくnormalアニメーションの途中でreverse()メソッドが呼ばれないといけない？)
+      // そのため'complete'だけでなく'update'のコールバックでもアニメーションの終了を検知する
+      if (
+        (animation.direction === 'reverse' && progress === 0) ||
+        (animation.direction === 'normal' && progress === 100)
+      ) {
+        animationWatchers.resolve()
+      }
     }
   })
 
