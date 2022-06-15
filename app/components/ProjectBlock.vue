@@ -3,9 +3,9 @@ import { computed, watch } from 'vue'
 import { useContents } from '@/composables/useContents'
 import { disableScroll, enableScroll } from '@/utilities/scrollBlock'
 
-const { contents } = useContents()
+const { contents } = $(useContents())
 
-const projects = $(computed(() => contents.value.main.projects))
+const projects = $(computed(() => contents.main.projects))
 
 /** 詳細表示中のプロジェクトのID */
 let activeProjectId = $ref<string | null>(null)
