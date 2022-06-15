@@ -19,15 +19,15 @@ const { tags } = defineProps<{
     display: inline-block;
     margin-right: 2px;
     margin-bottom: 2px;
-    padding: 4px 8px;
+    padding: 4px 12px;
     background: $color-tag-background;
-    border-radius: 12px;
-    font-size: 12px;
+    border-radius: 16px;
+    font-size: 13px;
     color: $color-tag-text;
-    @media ($pc) {
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 13px;
+    @media ($sp) {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
     }
   }
 }
