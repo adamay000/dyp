@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue'
 import { useContents } from '@/composables/useContents'
+import { KeyCode, useKeyup } from '@/composables/useKey'
 import { disableScroll, enableScroll } from '@/utilities/scrollBlock'
 
 const { contents } = $(useContents())
@@ -20,7 +21,7 @@ const prevId = $computed<string | null>(() => {
   return projects[currentIndex - 1]?.id || null
 })
 /** 詳細表示中のプロジェクトの一つ次のプロジェクトのID */
-const nextId = computed<string | null>(() => {
+const nextId = $computed<string | null>(() => {
   const currentIndex = projects.findIndex(({ id }) => id === activeProjectId)
   if (currentIndex === -1) {
     return null
@@ -36,6 +37,19 @@ const handleOpen = (id: string) => {
 const handleClose = () => {
   activeProjectId = null
 }
+
+// 左右キーを押したときに前後のプロジェクトに表示を切り替える
+useKeyup(
+  (key: KeyCode) => {
+    if (key === 'right' && nextId !== null) {
+      handleOpen(nextId)
+    }
+    if (key === 'left' && prevId !== null) {
+      handleOpen(prevId)
+    }
+  },
+  ['right', 'left']
+)
 
 // 詳細表示時はオーバーレイが表示させるのでページはスクロールできないようにする
 watch(
