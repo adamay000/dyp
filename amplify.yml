@@ -4,7 +4,7 @@ frontend:
     preBuild:
       commands:
         - yarn
-        - aws s3 cp s3://$CONTENTS_BUCKET app --recursive
+        - aws s3 cp s3://$CONTENTS_BUCKET/${AWS_BRANCH} app --recursive
         - yarn generate:schema
     build:
       commands:

@@ -13,7 +13,7 @@
     "build": "nuxi generate",
     "generate:schema": "typescript-json-schema app/contents/definition.ts Contents --required --strictNullChecks --out app/contents/schema.json",
     "postgenerate:schema": "prettier --write --list-different app/contents/schema.json",
-    "amplify:contents": "aws s3 sync app/public/contents s3://${CONTENTS_BUCKET}/public/contents --delete && aws s3 cp app/contents/contents.json s3://${CONTENTS_BUCKET}/contents/",
+    "amplify:contents": "BRANCH=$(git branch | sed -n -e 's/^\\* \\(.*\\)/\\1/p') && aws s3 sync app/public/contents s3://${CONTENTS_BUCKET}/${BRANCH}/public/contents --delete && aws s3 cp app/contents/contents.json s3://${CONTENTS_BUCKET}/${BRANCH}/contents/",
     "typecheck": "nuxi typecheck",
     "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lint:css": "yarn lint:css:vue && yarn lint:css:scss",
