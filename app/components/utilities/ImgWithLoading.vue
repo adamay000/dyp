@@ -70,10 +70,10 @@ watchEffect(() => {
 
 <template>
   <div ref="rootRef" v-bind="$attrs" class="c-img-with-loading">
-    <img :src="src" :alt="alt" class="image" />
     <Transition name="loading-fade">
-      <div v-if="isError" key="error" class="error loading-fade">読み込みに失敗しました</div>
-      <SkeletonLoading v-else-if="!isReady" key="loading" class="loading loading-fade" />
+      <img v-if="isReady" :src="src" :alt="alt" class="image loading-fade" />
+      <div v-else-if="isError" key="error" class="error loading-fade">読み込みに失敗しました</div>
+      <SkeletonLoading v-else key="loading" class="loading loading-fade" />
     </Transition>
   </div>
 </template>
