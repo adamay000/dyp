@@ -13,8 +13,9 @@ import { easeOut5 } from '@/utilities/math'
 
 // TODO コンポーネント別ける。heroアニメーションの都合で難しいのでこのままでもいいかも
 
-const { project, active, hasAnotherActive } = defineProps<{
+const { project, isInitial, active, hasAnotherActive } = defineProps<{
   project: Contents['main']['projects'][0]
+  isInitial: boolean
   active: boolean
   hasAnotherActive: boolean
 }>()
@@ -35,7 +36,7 @@ const detailHeaderRef = ref<HTMLElement>()
 const stickyCheckerRef = ref<HTMLElement>()
 
 /** 詳細表示時のタイトル要素がsticky状態になっていないかどうか */
-const isNotStuck = $(useVisibilityDetector(stickyCheckerRef))
+const isNotStuck = $(useVisibilityDetector(stickyCheckerRef, true))
 /** 詳細表示時のタイトル要素がsticky状態になっているかどうか */
 const isStuck = $(
   computed(() => {
@@ -121,6 +122,8 @@ const { playAnimation, reverseAnimation } = (() => {
   const animation = anime.timeline({
     autoplay: false
   })
+  animation.complete = () => animationWatcher.resolve()
+
   onMounted(() => {
     const options: AnimeAnimParams = {
       easing: () => easeOut5,
@@ -154,7 +157,11 @@ const { playAnimation, reverseAnimation } = (() => {
         },
         0
       )
-    animation.complete = () => animationWatcher.resolve()
+
+    // アクセス時に最初から表示されている場合は最初からアニメーション終了状態にする
+    if (isInitial) {
+      animation.seek(animation.duration)
+    }
   })
   return {
     playAnimation: () => {

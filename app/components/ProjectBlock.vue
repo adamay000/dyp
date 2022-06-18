@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useRoute, useRouter } from '#app'
 import { computed, watch } from 'vue'
 import { useContents } from '@/composables/useContents'
 import { KeyCode, useKeyup } from '@/composables/useKey'
@@ -8,8 +9,16 @@ const { contents } = $(useContents())
 
 const projects = $(computed(() => contents.main.projects))
 
+const route = useRoute()
+const router = useRouter()
+
+/** 初期表示するプロジェクトのID<br>クエリの/?[id]の部分から判断する */
+const initialProjectId = projects.find(({ id }) => Object.prototype.hasOwnProperty.call(route.query, id))?.id ?? null
+/** いずれかのプロジェクトを初期表示しているかどうか */
+const hasInitialActiveProject = initialProjectId !== null
+
 /** 詳細表示中のプロジェクトのID */
-let activeProjectId = $ref<string | null>(null)
+let activeProjectId = $ref<string | null>(initialProjectId)
 /** いずれかのプロジェクトを詳細表示しているかどうか */
 const isActive = $computed(() => activeProjectId !== null)
 /** 詳細表示中のプロジェクトの一つ前のプロジェクトのID */
@@ -90,8 +99,10 @@ watch(
   () => activeProjectId,
   (value) => {
     if (value === null) {
+      router.replace({ path: '/' })
       enableScroll()
     } else {
+      router.replace({ path: '/', query: { [value]: null } })
       disableScroll()
     }
   }
@@ -104,6 +115,7 @@ watch(
       <li v-for="project in projects" :id="project.id" :key="project.id" class="item">
         <ProjectArticle
           :project="project"
+          :is-initial="hasInitialActiveProject"
           :active="activeProjectId === project.id"
           :has-another-active="isActive && activeProjectId !== project.id"
           @open="handleOpen"
