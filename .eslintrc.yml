@@ -16,3 +16,7 @@ rules:
     - allow:
         - 'warn'
         - 'error'
+  'no-redeclare': 0
+  '@typescript-eslint/no-redeclare':
+    - 'error'
+    - ignoreDeclarationMerge: true
