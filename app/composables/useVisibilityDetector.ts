@@ -63,8 +63,33 @@ class UseVisibilityDetector {
  *   // 状態が変わるたびに呼ばれる
  * })
  */
-export const useVisibilityDetector = (elementRef: Ref<HTMLElement | undefined>, detector?: Detector) => {
-  const isVisible = ref(false)
+export function useVisibilityDetector(elementRef: Ref<HTMLElement | undefined>): Ref<boolean>
+export function useVisibilityDetector(
+  elementRef: Ref<HTMLElement | undefined>,
+  detector: Detector,
+  initialValue?: boolean
+): Ref<boolean>
+export function useVisibilityDetector(elementRef: Ref<HTMLElement | undefined>, initialValue: boolean): Ref<boolean>
+export function useVisibilityDetector(
+  elementRef: Ref<HTMLElement | undefined>,
+  second?: Detector | boolean,
+  third?: boolean
+): Ref<boolean> {
+  const { detector, initialValue } = ((): { detector: Detector | null; initialValue: boolean } => {
+    if (typeof second === 'function') {
+      return {
+        detector: second,
+        initialValue: third || false
+      }
+    }
+
+    return {
+      detector: null,
+      initialValue: second || false
+    }
+  })()
+
+  const isVisible = ref(initialValue)
   if (process.server) {
     return isVisible
   }
@@ -78,6 +103,8 @@ export const useVisibilityDetector = (elementRef: Ref<HTMLElement | undefined>, 
         isVisible.value = isIntersecting
         detector?.(isIntersecting)
       })
+    } else {
+      isVisible.value = false
     }
   })
 
