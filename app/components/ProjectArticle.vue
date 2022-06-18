@@ -174,7 +174,13 @@ const { playAnimation, reverseAnimation } = (() => {
 
 const enter = async (_: unknown, done: () => void) => {
   scrollRef.value?.scrollTo(0, 0)
-  await Promise.all([playThumbnail(), playHeroTitle(), playHeroDate(), playHeroGithub(), playAnimation()])
+  await Promise.all([
+    playThumbnail(),
+    playHeroTitle(),
+    playHeroDate(),
+    project.github !== null && playHeroGithub(),
+    playAnimation()
+  ])
   done()
 }
 
@@ -183,7 +189,7 @@ const leave = async (_: unknown, done: () => void) => {
     reverseThumbnail(),
     reverseHeroTitle(),
     reverseHeroDate(),
-    reverseHeroGithub(),
+    project.github !== null && reverseHeroGithub(),
     reverseAnimation()
   ])
   done()
