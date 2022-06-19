@@ -45,5 +45,10 @@ export default defineNuxtConfig({
       { hid: 'description', name: 'description', content: '' }
     ]
   },
-  buildModules: ['./app/buildModules/load-contents.ts']
+  buildModules: ['./app/buildModules/load-contents.ts'],
+  runtimeConfig: {
+    public: {
+      gtmId: process.env.GTM_ID
+    }
+  }
 })

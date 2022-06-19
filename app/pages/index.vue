@@ -16,6 +16,7 @@ useHead({
       <IntroductionBlock class="introduction" />
       <p class="projecttitle">PROJECTS</p>
       <ProjectBlock class="projects" />
+      <PrivacyPolicy />
     </div>
   </div>
 </template>
@@ -52,6 +53,9 @@ useHead({
     @media ($sp) {
       margin-top: 60px;
     }
+  }
+  & > .content > .privacy {
+    margin-top: 40px;
   }
 }
 </style>
