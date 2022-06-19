@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+import { useNuxtApp } from '#app'
 import { computed, watch } from 'vue'
+import { GTMEvent, GTMCategory } from '@/plugins/analytics.client'
 import { useContents } from '@/composables/useContents'
 import { KeyCode, useKeyup } from '@/composables/useKey'
 import { disableScroll, enableScroll } from '@/utilities/scrollBlock'
+
+const app = useNuxtApp()
 
 const { contents } = $(useContents())
 
@@ -33,6 +37,11 @@ const nextId = $computed<string | null>(() => {
 const handleOpen = (id: string) => {
   activeProjectId = id
 
+  app.$gtm(GTMEvent.View, {
+    category: GTMCategory.ProjectDetail,
+    label: activeProjectId
+  })
+
   // 表示時に閉じる、前後に進むボタン(これらはtabindex="9999")にフォーカスを合わせる
   // nextTickだとタイミング合わないのでとりあえずsetTimeout
   // 失敗してもクリティカルではない
@@ -56,6 +65,11 @@ const handleClose = () => {
   const prevActiveProjectId = activeProjectId
   activeProjectId = null
 
+  app.$gtm(GTMEvent.View, {
+    category: GTMCategory.Top,
+    label: 'トップページ'
+  })
+
   // 閉じたときにそのプロジェクトの位置にフォーカスを移動させる
   // nextTickだとタイミング合わないのでとりあえずsetTimeout
   // 失敗してもクリティカルではない
@@ -72,13 +86,47 @@ const handleClose = () => {
   })
 }
 
+const prev = () => {
+  if (prevId) {
+    app.$gtm(GTMEvent.ButtonClick, {
+      category: GTMCategory.ProjectDetail,
+      label: 'Prev project'
+    })
+
+    handleOpen(prevId)
+  }
+}
+
+const next = () => {
+  if (nextId) {
+    app.$gtm(GTMEvent.ButtonClick, {
+      category: GTMCategory.ProjectDetail,
+      label: 'Next project'
+    })
+
+    handleOpen(nextId)
+  }
+}
+
 // 左右キーを押したときに前後のプロジェクトに表示を切り替える
 useKeyup(
   (key: KeyCode) => {
     if (key === 'right' && nextId !== null) {
+      app.$gtm(GTMEvent.Keyboard, {
+        category: GTMCategory.ProjectDetail,
+        label: 'Next project',
+        key
+      })
+
       handleOpen(nextId)
     }
     if (key === 'left' && prevId !== null) {
+      app.$gtm(GTMEvent.Keyboard, {
+        category: GTMCategory.ProjectDetail,
+        label: 'Prev project',
+        key
+      })
+
       handleOpen(prevId)
     }
   },
@@ -125,11 +173,11 @@ watch(
       <div v-if="isActive" class="project-navigator">
         <div class="inner">
           <button class="close" tabindex="9999" @click="handleClose">閉じる</button>
-          <button :disabled="prevId === null" class="button -prev" tabindex="9999" @click="handleOpen(prevId!)">
+          <button :disabled="prevId === null" class="button -prev" tabindex="9999" @click="prev">
             <span class="hitarea" />
             <span class="text">PREV</span>
           </button>
-          <button :disabled="nextId === null" class="button -next" tabindex="9999" @click="handleOpen(nextId!)">
+          <button :disabled="nextId === null" class="button -next" tabindex="9999" @click="next">
             <span class="hitarea" />
             <span class="text">NEXT</span>
           </button>
