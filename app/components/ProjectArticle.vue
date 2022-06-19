@@ -2,6 +2,7 @@
 import { computed, ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import anime, { AnimeAnimParams } from 'animejs'
+import { GTMEvent, GTMCategory } from '@/plugins/analytics.client'
 import { Contents } from '@/contents/definition'
 import { useHero } from '@/composables/useHero'
 import ImageList from '@/components/ImageList.vue'
@@ -223,7 +224,9 @@ const leave = async (_: unknown, done: () => void) => {
             target="_blank"
             class="icon"
             :tabindex="active || hasAnotherActive ? -1 : 0"
-            @click.stop
+            @click.stop="
+              $gtm(GTMEvent.LinkClick, { category: GTMCategory.ProjectSummary, label: 'site', url: project.site! })
+            "
           >
             <img src="@/assets/images/site.png" alt="site" class="image" />
           </a>
@@ -234,7 +237,9 @@ const leave = async (_: unknown, done: () => void) => {
             target="_blank"
             class="icon"
             :tabindex="active || hasAnotherActive ? -1 : 0"
-            @click.stop
+            @click.stop="
+              $gtm(GTMEvent.LinkClick, { category: GTMCategory.ProjectSummary, label: 'video', url: project.video! })
+            "
           >
             <img src="@/assets/images/video.png" alt="video" class="image" />
           </a>
@@ -245,7 +250,9 @@ const leave = async (_: unknown, done: () => void) => {
             target="_blank"
             class="icon"
             :tabindex="active || hasAnotherActive ? -1 : 0"
-            @click.stop
+            @click.stop="
+              $gtm(GTMEvent.LinkClick, { category: GTMCategory.ProjectSummary, label: 'github', url: project.github! })
+            "
           >
             <img ref="fromGithubRef" src="@/assets/images/github.png" alt="github" class="image" />
           </a>
@@ -291,13 +298,28 @@ const leave = async (_: unknown, done: () => void) => {
                 rel="nofollow noopener noreferrer"
                 target="_blank"
                 class="github"
+                @click="
+                  $gtm(GTMEvent.LinkClick, { category: GTMCategory.ProjectDetail, label: 'github', url: project.github! })
+                "
               >
                 <img ref="toGithubRef" src="@/assets/images/github.png" alt="github" class="icon" />
               </a>
             </header>
             <ul v-if="project.links.length > 0" ref="linksRef" class="links">
               <li v-for="{ url, comment } in project.links" :key="url" class="item">
-                <a :href="url" rel="nofollow noopener noreferrer" target="_blank">{{ comment }}</a>
+                <a
+                  :href="url"
+                  rel="nofollow noopener noreferrer"
+                  target="_blank"
+                  @click="
+                    $gtm(GTMEvent.LinkClick, {
+                      category: GTMCategory.ProjectSummary,
+                      label: comment || url,
+                      url
+                    })
+                  "
+                  >{{ comment || url }}</a
+                >
               </li>
             </ul>
             <ImageList
