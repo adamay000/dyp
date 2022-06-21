@@ -5,6 +5,7 @@ export interface Contents {
       image: string
       birth: Date
       description: string
+      hope: string
       tags: Array<string>
       careers: Array<{
         date: Date
