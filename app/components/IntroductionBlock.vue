@@ -47,6 +47,10 @@ const favorites = $(computed(() => introduction.favorites.join('、')))
         </li>
       </ul>
     </div>
+    <div class="hope hope-detail">
+      <p class="title">やりたい仕事</p>
+      <p class="text">{{ introduction.hope }}</p>
+    </div>
     <div class="favorites favorite-list">
       <p class="title">好きなもの</p>
       <p class="text">{{ favorites }}</p>
@@ -107,6 +111,9 @@ const favorites = $(computed(() => introduction.favorites.join('、')))
   & > .careers {
     margin-top: 24px;
   }
+  & > .hope {
+    margin-top: 24px;
+  }
   & > .favorites {
     margin-top: 24px;
   }
@@ -154,6 +161,31 @@ const favorites = $(computed(() => introduction.favorites.join('、')))
     display: table-cell;
     line-height: 1.5;
     white-space: pre-line;
+  }
+}
+.hope-detail {
+  position: relative;
+  padding-left: 118px;
+  @media ($sp) {
+    padding-left: 0;
+  }
+  & > .title {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    font-size: 16px;
+    @media ($sp) {
+      position: static;
+    }
+  }
+  & > .text {
+    margin-top: -4px;
+    margin-bottom: -4px;
+    line-height: 1.5;
+    white-space: pre-line;
+    @media ($sp) {
+      margin-top: 5px;
+    }
   }
 }
 .favorite-list {
